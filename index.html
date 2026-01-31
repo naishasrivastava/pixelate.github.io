@@ -692,8 +692,7 @@
                 generateRandomNoise,
                 generateSpiral,
                 generateConcentric,
-                generateStripes,
-                generateCross
+                generateStripes
             ];
             
             patterns[currentPatternIndex]();
@@ -826,24 +825,6 @@
             }
         }
 
-
-
-        function generateCross() {
-            clearCanvas();
-            const centerX = Math.floor(gridSize / 2);
-            const centerY = Math.floor(gridSize / 2);
-            const thickness = Math.floor(gridSize / 8);
-
-            
-
-            for (let y = 0; y < gridSize; y++) {
-                for (let x = 0; x < gridSize; x++) {
-                    if (Math.abs(x - centerX) < thickness || Math.abs(y - centerY) < thickness) {
-                        grid[y][x] = currentColor;
-                    }
-                }
-            }
-        }
 
         function downloadPixelArt() {
             const exportCanvas = document.createElement('canvas');

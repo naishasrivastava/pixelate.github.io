@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pixelforge - pixel art creator</title>
+    <title>pixelate - pixel art creator</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="alternate icon" type="image/svg+xml" href="favicon.svg">
     <style>
@@ -378,8 +378,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>pixelforge</h1>
-        <p class="subtitle">• create pixel art one square at a time •</p>
+        <h1>pixelate</h1>
+        <p class="subtitle">▪ create pixel art one square at a time ▪</p>
         
         <div class="main-layout">
             <div class="controls-panel">
@@ -778,14 +778,14 @@
             }
             
             const link = document.createElement('a');
-            link.download = 'pixelforge_art.png';
+            link.download = 'pixelate_art.png';
             link.href = exportCanvas.toDataURL();
             link.click();
         }
 
         function downloadPixelArtSmall() {
             const link = document.createElement('a');
-            link.download = 'pixelforge_art_small.png';
+            link.download = 'pixelate_art_small.png';
             link.href = canvas.toDataURL();
             link.click();
         }

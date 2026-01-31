@@ -462,13 +462,14 @@
         let currentTool = 'draw';
         let isDrawing = false;
         let grid = [];
+        let currentPatternIndex = 0;
 
-        const defaultPalette = [
-            '#2563eb', '#1d4ed8', '#78350f', '#92400e',
-            '#fef3c7', '#fde68a', '#ffffff', '#000000',
-            '#ef4444', '#f97316', '#22c55e', '#06b6d4',
-            '#8b5cf6', '#ec4899', '#a3e635', '#fb923c'
-        ];
+        // const defaultPalette = [
+        //     '#2563eb', '#1d4ed8', '#78350f', '#92400e',
+        //     '#fef3c7', '#fde68a', '#ffffff', '#000000',
+        //     '#ef4444', '#f97316', '#22c55e', '#06b6d4',
+        //     '#8b5cf6', '#ec4899', '#a3e635', '#fb923c'
+        // ];
 
 
         function init() {
@@ -688,16 +689,23 @@
                 generateCheckerboard,
                 generateCircle,
                 generateDiamond,
-                generateRandomNoise
+                generateRandomNoise,
+                generateSpiral,
+                generateConcentric,
+                generateStripes,
+                generateCross
             ];
             
-            const randomPattern = patterns[Math.floor(Math.random() * patterns.length)];
-            randomPattern();
+            patterns[currentPatternIndex]();
+            currentPatternIndex = (currentPatternIndex + 1) % patterns.length;
             renderGrid();
+
         }
 
+
+
         function generateGradient() {
-            const colors = defaultPalette.filter(c => c !== '#ffffff' && c !== '#000000');
+            const colors = ['#2563eb', '#1d4ed8', '#78350f', '#92400e', '#fef3c7', '#fde68a'];
             for (let y = 0; y < gridSize; y++) {
                 const colorIndex = Math.floor((y / gridSize) * colors.length);
                 for (let x = 0; x < gridSize; x++) {
@@ -706,8 +714,10 @@
             }
         }
 
+
+
         function generateCheckerboard() {
-            const colors = [currentColor, defaultPalette[4]];
+            const colors = [currentColor, '#fef3c7'];
             for (let y = 0; y < gridSize; y++) {
                 for (let x = 0; x < gridSize; x++) {
                     grid[y][x] = colors[(x + y) % 2];
@@ -715,12 +725,14 @@
             }
         }
 
+
+
         function generateCircle() {
             clearCanvas();
             const centerX = gridSize / 2;
             const centerY = gridSize / 2;
             const radius = gridSize / 3;
-            
+
             for (let y = 0; y < gridSize; y++) {
                 for (let x = 0; x < gridSize; x++) {
                     const distance = Math.sqrt(
@@ -733,12 +745,13 @@
             }
         }
 
+
         function generateDiamond() {
             clearCanvas();
             const centerX = gridSize / 2;
             const centerY = gridSize / 2;
             const size = gridSize / 3;
-            
+        
             for (let y = 0; y < gridSize; y++) {
                 for (let x = 0; x < gridSize; x++) {
                     if (Math.abs(x - centerX) + Math.abs(y - centerY) < size) {
@@ -748,14 +761,85 @@
             }
         }
 
+
+
         function generateRandomNoise() {
-            const colors = defaultPalette.filter(c => c !== 'transparent');
+            const colors = ['#2563eb', '#1d4ed8', '#78350f', '#92400e', '#ef4444', '#f97316', '#22c55e', '#06b6d4'];
             for (let y = 0; y < gridSize; y++) {
                 for (let x = 0; x < gridSize; x++) {
                     if (Math.random() > 0.6) {
                         grid[y][x] = colors[Math.floor(Math.random() * colors.length)];
                     } else {
                         grid[y][x] = 'transparent';
+                    }
+                }
+            }
+        }
+
+
+        function generateSpiral() {
+            clearCanvas();
+            const centerX = Math.floor(gridSize / 2);
+            const centerY = Math.floor(gridSize / 2);
+            
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    const dx = x - centerX;
+                    const dy = y - centerY;
+                    const angle = Math.atan2(dy, dx);
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const spiralValue = (angle + distance * 0.3) % (Math.PI * 2);
+
+                    if (spiralValue < Math.PI) {
+                        grid[y][x] = currentColor;
+                    }
+                }
+            }
+        }
+
+
+
+        function generateConcentric() {
+            clearCanvas();
+            const centerX = gridSize / 2;
+            const centerY = gridSize / 2;
+            const colors = ['#2563eb', '#1d4ed8', '#78350f', '#92400e'];
+     
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    const distance = Math.sqrt(
+                        Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)
+                    );
+                    const ring = Math.floor(distance / 3) % colors.length;
+                    grid[y][x] = colors[ring];
+                }
+            }
+        }
+
+        function generateStripes() {
+            clearCanvas();
+            const colors = [currentColor, '#fef3c7', '#1d4ed8'];
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    grid[y][x] = colors[Math.floor(x / 4) % colors.length];
+                }
+            }
+        }
+
+
+
+        function generateCross() {
+            clearCanvas();
+            const centerX = Math.floor(gridSize / 2);
+            const centerY = Math.floor(gridSize / 2);
+            const thickness = Math.floor(gridSize / 8);
+
+            
+
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    if (Math.abs(x - centerX) < thickness || Math.abs(y - centerY) < thickness) {
+                        grid[y][x] = currentColor;
                     }
                 }
             }
